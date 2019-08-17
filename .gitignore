@@ -1,0 +1,10 @@
+
+NetworkingTest/Library/
+NetworkingTest/.vs/
+*.csproj
+
+NetworkingTest/Logs/
+
+NetworkingTest/NetworkingTest.sln
+
+NetworkingTest/obj/

@@ -32,19 +32,25 @@ public class NetworkTest : MonoBehaviour
         {
             Message msg = UdpNetworking.messageQueue.Dequeue();
 
-            print(msg.content);
+            print(msg.stringContent);
 
             if (isServer)
             {
                 // respond to message
-                IPEndPoint endPoint = new IPEndPoint(msg.source.Address, clientPort);
-                UdpNetworking.send("Hello client!", endPoint);
+                IPEndPoint endPoint = new IPEndPoint(msg.sourceEndPoint.Address, clientPort);
+                Message msgToSend = new Message(endPoint);
+                msgToSend.messageType = Message.MessageType.Ack;
+                msgToSend.stringContent = "Hello client!";
+                UdpNetworking.send(msgToSend);
             }
         }
 
         if (!isServer && Input.GetKeyDown(KeyCode.Space))
         {
-            UdpNetworking.send("Hello server!", new IPEndPoint(serverAddress, serverPort));
+            Message message = new Message(new IPEndPoint(serverAddress, serverPort));
+            message.messageType = Message.MessageType.Connect;
+            message.stringContent = "Hello server!";
+            UdpNetworking.send(message);
         }
     }
 
